@@ -1,7 +1,11 @@
-package norm
+package norm.codegen
 
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
+import norm.model.ColumnModel
+import norm.model.ParamModel
+import norm.model.SqlModel
+import norm.typemapper.DbToKtDefaultTypeMapper
 
 class CodeGenerator(private val typeMapper: DbToKtDefaultTypeMapper = DbToKtDefaultTypeMapper()) {
 
@@ -97,7 +101,7 @@ class CodeGenerator(private val typeMapper: DbToKtDefaultTypeMapper = DbToKtDefa
 
             val constructArgs = "\n" + cols.joinToString(",\n  ") {
                 if (it.colType.startsWith("_"))
-                    "${it.fieldName} = rs.getArray(\"${it.colName}\").array as ${getTypeName(it)}>"
+                    "${it.fieldName} = rs.getArray(\"${it.colName}\").array as ${getTypeName(it)}"
                 else
                     "${it.fieldName} = rs.getObject(\"${it.colName}\") as ${getTypeName(it)}"
             }
